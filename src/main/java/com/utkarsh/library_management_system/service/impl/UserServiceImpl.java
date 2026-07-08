@@ -1,24 +1,35 @@
 package com.utkarsh.library_management_system.service.impl;
 
 import com.utkarsh.library_management_system.dto.request.UserRegisterRequest;
-import com.utkarsh.library_management_system.dto.response.UserReponse;
+import com.utkarsh.library_management_system.dto.response.UserResponse;
+import com.utkarsh.library_management_system.entity.User;
+import com.utkarsh.library_management_system.exception.ResourceNotFoundException;
+import com.utkarsh.library_management_system.mapper.UserMapper;
+import com.utkarsh.library_management_system.repository.UserRepository;
 import com.utkarsh.library_management_system.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private UserRepository userRepository;
+    private UserMapper userMapper;
     @Override
-    public UserReponse register(UserRegisterRequest request) {
+    public UserResponse register(UserRegisterRequest request) {
         return null;
     }
 
     @Override
-    public UserReponse getUserById(Long id) {
-        return null;
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", id));
+        return userMapper.toResponse(user);
     }
 
     @Override
-    public List<UserReponse> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         return List.of();
     }
 

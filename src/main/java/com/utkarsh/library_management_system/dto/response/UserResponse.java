@@ -1,6 +1,6 @@
 package com.utkarsh.library_management_system.dto.response;
 
-public record UserReponse(
+public record UserResponse(
         Long id,
         String name,
         String email,
