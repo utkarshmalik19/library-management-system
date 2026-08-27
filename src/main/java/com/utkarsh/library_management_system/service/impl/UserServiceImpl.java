@@ -3,6 +3,7 @@ package com.utkarsh.library_management_system.service.impl;
 import com.utkarsh.library_management_system.dto.request.UserRegisterRequest;
 import com.utkarsh.library_management_system.dto.response.UserResponse;
 import com.utkarsh.library_management_system.entity.User;
+import com.utkarsh.library_management_system.entity.enums.Role;
 import com.utkarsh.library_management_system.exception.ResourceNotFoundException;
 import com.utkarsh.library_management_system.mapper.UserMapper;
 import com.utkarsh.library_management_system.repository.UserRepository;
@@ -11,15 +12,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
     @Override
     public UserResponse register(UserRegisterRequest request) {
-        return null;
+        User user = new User();
+        user.setName(request.name());
+        user.setEmail(request.email());
+        user.setPassword(request.password());
+        //Only temporary, fix this later and assign in service maybe
+        user.setRole(Role.USER);
+        return userMapper.toResponse(userRepository.save(user));
     }
 
     @Override
@@ -30,7 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> getAllUsers() {
-        return List.of();
+        List<User> users = userRepository.findAll();
+        return users.stream().map(userMapper::toResponse).collect(Collectors.toList());
+
     }
 
     @Override

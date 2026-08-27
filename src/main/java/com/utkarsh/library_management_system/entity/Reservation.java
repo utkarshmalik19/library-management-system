@@ -13,7 +13,9 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
     private LocalDate reservationDate;
     private ReservationStatus status;
